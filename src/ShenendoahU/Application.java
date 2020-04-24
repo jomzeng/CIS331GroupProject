@@ -109,7 +109,7 @@ public class Application {
                 break;
             else
             {
-                System.out.print("Invalid GPA Entereed. Please Reenter Email: ");
+                System.out.print("Invalid GPA Entered. Please Reenter GPA: ");
             }
         }
                 
