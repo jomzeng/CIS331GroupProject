@@ -170,8 +170,26 @@ public class Application {
         
         System.out.println("----------------------");
         System.out.print("Choose Course Number: ");
+	    
+        int choice = 0;
+        boolean validInput = false;
         
-        int choice = in.nextInt();
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid course number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }  
+        
         
         //Loops through all courses in courseArray and finds course with matching course ID
         //Attempts to add student to selected course, enrollStudentWithCheck() method returns true if there is room
