@@ -5,9 +5,7 @@
  */
 package ShenendoahU;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Iterator;
+import java.util.*;
 
 public class Application {
     
@@ -48,13 +46,31 @@ public class Application {
     
     public static int mainMenu()
     {
-        System.out.print("\nStudent Management System\nPlease Make a Menu Choice Below:"
+        int chosenOption = 0;
+        String menuOutput = "\nStudent Management System\nPlease Make a Menu Choice Below:"
                 + "\n---------------------------------\n1. Create a Course\n2. Add Student a Course"
                 + "\n3. Remove Student from a Course\n4. Add Instructor to a Course"
-                + "\n5. Print Roster for a Course\n6. Quit\nChoice: ");
+                + "\n5. Print Roster for a Course\n6. Quit\nChoice: ";
+        
+        System.out.print(menuOutput);
                         
         Scanner in = new Scanner(System.in);
-        return in.nextInt(); 
+        boolean validInput = false;
+        while(!validInput) 
+        {
+            try 
+            {
+                chosenOption = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter an integer!");
+                System.out.print(menuOutput);
+                in.next();
+            }
+        }  
+        return chosenOption; 
     }
         
     public static void createCourse()
@@ -73,7 +89,24 @@ public class Application {
         String courseBldgRoom = in.nextLine();
         
         System.out.print("Enter Room Capacity: ");
-        int courseCapacity = in.nextInt();
+        int courseCapacity = 0;
+        
+        // Error handling when user inputs a string
+        boolean validInput = false;
+        while(!validInput) 
+        {
+            try 
+            {
+                courseCapacity = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter an integer!");
+                System.out.print("Enter Room Capacity: ");
+                in.next();
+            }
+        }  
         
         Course course = new Course(courseName,courseBuilding,courseBldgRoom,courseCapacity);
         courseArray.add(course);
@@ -109,7 +142,7 @@ public class Application {
                 break;
             else
             {
-                System.out.print("Invalid GPA Entereed. Please Reenter Email: ");
+                System.out.print("Invalid GPA Entered. Please Reenter GPA: ");
             }
         }
                 
@@ -137,8 +170,26 @@ public class Application {
         
         System.out.println("----------------------");
         System.out.print("Choose Course Number: ");
+	    
+        int choice = 0;
+        boolean validInput = false;
         
-        int choice = in.nextInt();
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid course number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }  
+        
         
         //Loops through all courses in courseArray and finds course with matching course ID
         //Attempts to add student to selected course, enrollStudentWithCheck() method returns true if there is room
@@ -250,11 +301,26 @@ public class Application {
         
         System.out.println("----------------------");
         System.out.print("Choose Course Number: ");
+        int choice = 0;
+        boolean validInput = false;
         
-        int choice = in.nextInt();
-        
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid course number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }
+	    
         //Loops through all courses in courseArray and finds course with matching course ID to add instructor
-        
         for(Course course : courseArray)
         { 
             if(course.getCourseID() == choice) //Finds desired Course instance
@@ -280,8 +346,25 @@ public class Application {
         
         System.out.print("\nChoose Class: ");
         
-        int choice = in.nextInt();
+	int choice = 0;
+        boolean validInput = false;
         
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid class number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }
+
         //Loops through all Course instances to call print roster method on selected course
         for(Course course : courseArray)
         { 
