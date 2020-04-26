@@ -283,11 +283,26 @@ public class Application {
         
         System.out.println("----------------------");
         System.out.print("Choose Course Number: ");
+        int choice = 0;
+        boolean validInput = false;
         
-        int choice = in.nextInt();
-        
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid course number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }
+	    
         //Loops through all courses in courseArray and finds course with matching course ID to add instructor
-        
         for(Course course : courseArray)
         { 
             if(course.getCourseID() == choice) //Finds desired Course instance
@@ -313,8 +328,25 @@ public class Application {
         
         System.out.print("\nChoose Class: ");
         
-        int choice = in.nextInt();
+	int choice = 0;
+        boolean validInput = false;
         
+        // Input validation (integer only)
+        while(!validInput) 
+        {
+            try 
+            {
+                choice = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter a valid class number!");
+                System.out.print("Choose Course Number: ");
+                in.next();
+            }
+        }
+
         //Loops through all Course instances to call print roster method on selected course
         for(Course course : courseArray)
         { 
