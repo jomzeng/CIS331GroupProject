@@ -51,7 +51,7 @@ public class Student {
                 this.studentYear = "Freshman";
                 break;
             case 2:
-                this.studentYear = "Sophmore";
+                this.studentYear = "Sophomore";
                 break;
             case 3:
                 this.studentYear = "Junior";
