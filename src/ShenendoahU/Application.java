@@ -1,20 +1,33 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Project Authors: Vincent Hoang, Thomas Knupp, Tran Le, Jom Zeng, Chris Torchia
+ * Date: 04/26/20
+ * Assignment: HW 7 - ShenendoahU
+ * Project Purpose: Desktop Applciation for Shenendoah U to manage course registration including 
+                    course creation, student registration/removal, instructor assignment and roster creation.
+                    This will minimize effort, errors, and redundancy, and allow for easy expansion and
+                    training of the Registrar’s team.
+
+ * Class Purpose: Main class which handles the primary processing logic for the overall application
  */
+
+// Application class written by Chris Torchia
+// Application error checking code written by Jom Zeng
+// Application user testing and function validation performed by Jom Zeng 
+
 package ShenendoahU;
 
 import java.util.*;
 
 public class Application {
-    
+    //ArrayList Initializtion
     public static ArrayList<Student> studentArray  = new ArrayList<>();
     public static ArrayList<Course> courseArray  = new ArrayList<>();
     public static ArrayList<Instructor> instructorArray  = new ArrayList<>();
 
     public static void main(String[] args) 
-    {        
+    {   
+        //Infinite loop to "run" main program, broken when user inputs option "6"
+        //Menu options 2-5 not available until user has intialized a couse through menu option 1
         loop: for(;;)
         {            
             switch(mainMenu())
@@ -23,21 +36,38 @@ public class Application {
                     createCourse();
                     break;
                 case 2:
-                    addStudent();
+                    //Quick Check to make sure that there is a course available to add a student to
+                    //If not, it prints an error message and returns back to the start of the menu
+                    //Same processing logic used for menu options 2-5
+                    if(courseArray.size() > 0)
+                        addStudent();
+                    else
+                        System.out.println("No Courses Available. Please Create a Course to Proceed");
                     break;
                 case 3:
-                    removeStudent();
+                    if(courseArray.size() > 0)
+                        removeStudent();
+                    else
+                        System.out.println("No Courses Available. Please Create a Course to Proceed");
                     break;
                 case 4:
-                    addInstructor();
+                    if(courseArray.size() > 0)
+                        addInstructor();
+                    else
+                        System.out.println("No Courses Available. Please Create a Course to Proceed");
                     break;
                 case 5:
-                    printRoster();
-                    break;   
+                    if(courseArray.size() > 0)
+                        printRoster();
+                    else
+                        System.out.println("No Courses Available. Please Create a Course to Proceed");
+                    break;  
                 case 6:
+                    //Ends program by calling break on "loop" alias
                     System.out.println("Exiting...");
-		    break loop;
+		    break loop; 
                 default:
+                    //Returns user back to start of menu for any input not in the menu choices
                     System.out.println("Invalid Choice, Please Choose Again\n");
                     continue;
             }            
@@ -55,6 +85,8 @@ public class Application {
         System.out.print(menuOutput);
                         
         Scanner in = new Scanner(System.in);
+        // ************Written by Jom Zeng************
+        //Error checking code to make sure that user inputs an integer
         boolean validInput = false;
         while(!validInput) 
         {
@@ -91,6 +123,7 @@ public class Application {
         System.out.print("Enter Room Capacity: ");
         int courseCapacity = 0;
         
+        // ************Written by Jom Zeng************
         // Error handling when user inputs a string
         boolean validInput = false;
         while(!validInput) 
@@ -106,8 +139,9 @@ public class Application {
                 System.out.print("Enter Room Capacity: ");
                 in.next();
             }
-        }  
+        }        
         
+        //Initalizes new course instance and adds it to the master course array
         Course course = new Course(courseName,courseBuilding,courseBldgRoom,courseCapacity);
         courseArray.add(course);
     }
@@ -129,16 +163,53 @@ public class Application {
         stu.setStudentMajor(in.nextLine());
         
         System.out.print("Year: ");
-        stu.setStudentYear(in.nextInt());
+        
+        // ************Written by Jom Zeng************
+        // Error handling when user inputs a string
+        int studentYear = 0;
+        boolean validInput = false;
+        while(!validInput) 
+        {
+            try 
+            {
+                studentYear = in.nextInt();
+                validInput = true;
+            } 
+            catch(InputMismatchException e) 
+            {
+                System.out.println("Please enter an integer!");
+                System.out.print("Enter Student Year: ");
+                in.next();
+            }
+        }
+        stu.setStudentYear(studentYear);
         
         System.out.print("GPA: ");
-        
-        //Attempts to add GPA via setGPAWithCheck() method
-        //If GPA is between 0 and 4, sets GPA and loop breaks 
-        //Otherwise it returns false, prints error message, and restarts loop
+                
         for(;;)
         {
-            if(stu.setGPAWithCheck(in.nextDouble()))
+            // ************Written by Jom Zeng************
+            // Error handling when user inputs a string
+            double GPA = 0.0;
+            validInput = false;
+            while(!validInput) 
+            {
+                try 
+                {
+                    GPA = in.nextDouble();
+                    validInput = true;
+                } 
+                catch(InputMismatchException e) 
+                {
+                    System.out.println("Please enter a number!");
+                    System.out.print("Enter GPA: ");
+                    in.next();
+                }
+            }
+            //Attempts to add GPA via setGPAWithCheck() method
+            //If GPA is between 0 and 5, sets GPA and loop breaks 
+            //Otherwise it returns false, prints error message, and restarts loop
+            if(stu.setGPAWithCheck(GPA))
                 break;
             else
             {
@@ -149,7 +220,7 @@ public class Application {
         System.out.print("Email: ");
         
         //Attempts to add email via setStudentEmailWithCheck() method
-        //If email contains "@" method returns true and loop breaks 
+        //If email contains "@" and a valid domain ending (.com,.edu,etc) method returns true and loop breaks 
         //Otherwise it returns false, prints error message, and restarts loop
         in.nextLine();
         for(;;)
@@ -172,9 +243,10 @@ public class Application {
         System.out.print("Choose Course Number: ");
 	    
         int choice = 0;
-        boolean validInput = false;
+        validInput = false;
         
-        // Input validation (integer only)
+        // ************Written by Jom Zeng************
+        // Error handling when user inputs a string
         while(!validInput) 
         {
             try 
@@ -275,13 +347,14 @@ public class Application {
         System.out.print("Department: ");
         String department = in.nextLine();
         
-        Instructor instructor = new Instructor(instructorName,prefix,officeLocation,department); //Create new Instructor instance to be populated with info
+        //Initalizes new instructor instance and adds it to the master instructor array
+        Instructor instructor = new Instructor(instructorName,prefix,officeLocation,department); 
         instructorArray.add(instructor); //Adds Instructor instance to Instructor ArrayList 
                 
         System.out.print("Email: ");
         
         //Attempts to add email via setEmailWithCheck() method
-        //If email contains "@" method returns true and loop breaks 
+        //If email contains "@" and a valid domain ending (.com,.edu,etc) method returns true and loop breaks 
         //Otherwise it returns false, prints error message, and restarts loop
         for(;;)
         {
@@ -304,7 +377,8 @@ public class Application {
         int choice = 0;
         boolean validInput = false;
         
-        // Input validation (integer only)
+        // ************Written by Jom Zeng************
+        // Error handling when user inputs a string
         while(!validInput) 
         {
             try 
@@ -349,7 +423,8 @@ public class Application {
 	int choice = 0;
         boolean validInput = false;
         
-        // Input validation (integer only)
+        // ************Written by Jom Zeng************
+        // Error handling when user inputs a string
         while(!validInput) 
         {
             try 

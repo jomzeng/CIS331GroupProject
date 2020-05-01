@@ -1,8 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Project Authors: Vincent Hoang, Thomas Knupp, Tran Le, Jom Zeng, Chris Torchia
+ * Date: 04/26/20
+ * Assignment: HW 7 - ShenendoahU
+ * Project Purpose: Desktop Applciation for Shenendoah U to manage course registration including 
+                    course creation, student registration/removal, instructor assignment and roster creation.
+                    This will minimize effort, errors, and redundancy, and allow for easy expansion and
+                    training of the Registrar’s team.
+
+ * Class Purpose: Course class defines behaviors and attributes for a given Course instance and
+                  handles string formatting for course information and roster printing purposes
  */
+
+// ******** Student class written by Vincent Hoang ************
 package ShenendoahU;
 
 import java.util.ArrayList;
@@ -20,9 +29,7 @@ public class Course {
     
     //Static Variable Initialization
     private static int nextCourseID = 1;
-    
-    //Creates unpopulated Course instance which intializes courseID and enrolledStudents
-    
+            
     public Course(String courseName, String courseBuilding, String courseBldgRoom, int courseCapacity)
     {
         this.courseName = courseName;
@@ -52,6 +59,8 @@ public class Course {
     
     public boolean removeStudent(int studentID)
     {
+        //Iterator used to allow for removal of student from ArrayList while iterating through list
+        //which would otherwise throw 
         boolean result = false;    
         Iterator<Student> i = this.enrolledStudents.iterator();
         while(i.hasNext())
@@ -126,6 +135,8 @@ public class Course {
             
     public boolean printRoster()
     {
+        //Calls getRoster method to print roster if there are students enrolled in the course
+        //otherwise prints error message and returns false
         if (this.enrolledStudents.size() == 0)
         {
             System.out.println("\nNo Students Enrolled in Course\n");
